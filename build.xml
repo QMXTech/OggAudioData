@@ -6,6 +6,6 @@
     <mkdir dir="build/classes" />
     <javac srcdir="src" destdir="build/classes" />
     <mkdir dir="build/libs" />
-    <jar destfile="build/libs/MCCodecLib.jar" basedir="build/classes" />
+    <jar destfile="build/libs/OggAudioData.jar" basedir="build/classes" />
   </target>
 </project>
