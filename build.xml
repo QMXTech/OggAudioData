@@ -8,4 +8,22 @@
     <mkdir dir="build/libs" />
     <jar destfile="build/libs/OggAudioData.jar" basedir="build/classes" />
   </target>
+  <target name="test" depends="build">
+    <mkdir dir="build/test" />
+    <javac srcdir="test" destdir="build/test">
+      <classpath>
+        <pathelement path="com.qmxtech.oggaudiodata"/>
+        <pathelement location="build/libs/OggAudioData.jar"/>
+      </classpath>
+    </javac>
+    <copydir src="build/classes/com" dest="build/test/com" />
+    <jar destfile="build/libs/Test.jar" basedir="build/test">
+      <manifest>
+        <attribute name="Main-Class" value="test.Test"/>
+      </manifest>
+    </jar>
+    <mkdir dir="build/libs/test" />
+    <copy file="test/test.ogg" todir="build/libs/test"/>
+    <java jar="build/libs/Test.jar" fork="true"/>
+  </target>
 </project>

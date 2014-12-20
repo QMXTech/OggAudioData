@@ -17,6 +17,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.PushbackInputStream;
 import java.io.InputStream;
+import java.lang.Byte;
+import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -47,20 +49,29 @@ public OggAudioData(String file) throws Exception {
 }
 
 public OggAudioData(InputStream is) throws Exception {
-        PushbackInputStream stream = new PushbackInputStream(is);
+        PushbackInputStream stream = new PushbackInputStream(is, 1073741824);
         long size = 0;
-        int b = 0;
+        int x = 0;
+        byte bt = 0;
+        ArrayList<Byte> btList = new ArrayList<Byte>();
 
-        while (b != -1) {
-                b = stream.read();
-                if (b == -1) {
+        while (bt != -1) {
+                x = stream.read();
+                bt = (byte) x;
+                if (bt == -1) {
                         break;
                 }
                 size++;
+                btList.add(bt);
         }
 
-        stream.unread((int)size);
+        byte[] reset = new byte[(int)size];
+        int j=0;
+        for(Byte y: btList) {
+                reset[j++] = y.byteValue();
+        }
 
+        stream.unread(reset);
         dataLength = size;
 
         int pos = 0;
@@ -68,10 +79,10 @@ public OggAudioData(InputStream is) throws Exception {
                 int packet_type = 0;
                 char[] capture_pattern1 = { 'v','o','r','b','i','s' };
                 for (int i = 0; i < capture_pattern1.length; i++) {
-                        b = stream.read();
+                        int b = stream.read();
                         if (b == -1)
-                                throw new Exception(
-                                              "no Vorbis identification header");
+                              throw new Exception(
+                                            "no Vorbis identification header");
                         pos++;
                         if (b != capture_pattern1[i]) {
                                 packet_type = b;
@@ -98,7 +109,7 @@ public OggAudioData(InputStream is) throws Exception {
                 char[] capture_pattern = { 'O', 'g', 'g', 'S', 0 };
                 int i;
                 for (i = 0; i < capture_pattern.length; i++) {
-                        b = stream.read();
+                        int b = stream.read();
                         if (b == -1)
                                 break;
                         if (b != capture_pattern[i]) {
@@ -117,11 +128,11 @@ public OggAudioData(InputStream is) throws Exception {
 
                 long absolute_granule_position = 0;
                 for (i = 0; i < 8; i++) {
-                        long nb = stream.read();
-                        if (nb == -1)
+                        long b = stream.read();
+                        if (b == -1)
                                 break;
 
-                        absolute_granule_position |= nb << (8 * i);
+                        absolute_granule_position |= b << (8 * i);
                 }
                 if (i < 8)
                         break;
@@ -218,7 +229,7 @@ public OggAudioData(ZipInputStream stream) throws Exception {
                         char[] capture_pattern1 = { 'v','o','r','b','i','s' };
                         for (int i = 0; i < capture_pattern1.length; i++) {
                                 int b = stream.read();
-                                if (b <= 0)
+                                if (b == -1)
                                         throw new Exception(
                                                       "no Vorbis identification header");
                                 pos++;
@@ -248,7 +259,7 @@ public OggAudioData(ZipInputStream stream) throws Exception {
                         int i;
                         for (i = 0; i < capture_pattern.length; i++) {
                                 int b = stream.read();
-                                if (b <= 0)
+                                if (b == -1)
                                         break;
                                 if (b != capture_pattern[i]) {
                                         headerStart += i + 1;
@@ -267,7 +278,7 @@ public OggAudioData(ZipInputStream stream) throws Exception {
                         long absolute_granule_position = 0;
                         for (i = 0; i < 8; i++) {
                                 long b = stream.read();
-                                if (b <= 0)
+                                if (b == -1)
                                         break;
 
                                 absolute_granule_position |= b << (8 * i);
@@ -350,7 +361,7 @@ public static long getSeconds(InputStream stream) throws Exception {
 }
 
 public static long getSeconds(ZipInputStream stream) throws Exception {
-  return (new OggAudioData(stream)).getSeconds();
+        return (new OggAudioData(stream)).getSeconds();
 }
 
 public static long getSeconds(String path) throws Exception {
@@ -370,7 +381,7 @@ public static int getChannels(InputStream stream) throws Exception {
 }
 
 public static int getChannels(ZipInputStream stream) throws Exception {
-  return (new OggAudioData(stream)).getChannels();
+        return (new OggAudioData(stream)).getChannels();
 }
 
 public static int getChannels(String path) throws Exception {
@@ -390,7 +401,7 @@ public static int getSampleRate(InputStream stream) throws Exception {
 }
 
 public static int getSampleRate(ZipInputStream stream) throws Exception {
-  return (new OggAudioData(stream)).getSampleRate();
+        return (new OggAudioData(stream)).getSampleRate();
 }
 
 public static int getSampleRate(String path) throws Exception {
@@ -410,7 +421,7 @@ public static int getVorbisVersion(InputStream stream) throws Exception {
 }
 
 public static int getVorbisVersion(ZipInputStream stream) throws Exception {
-  return (new OggAudioData(stream)).getVorbisVersion();
+        return (new OggAudioData(stream)).getVorbisVersion();
 }
 
 public static int getVorbisVersion(String path) throws Exception {
@@ -431,7 +442,7 @@ public static long getSizeInBytes(InputStream stream) throws Exception {
 }
 
 public static long getSizeInBytes(ZipInputStream stream) throws Exception {
-  return (new OggAudioData(stream)).getSizeInBytes();
+        return (new OggAudioData(stream)).getSizeInBytes();
 }
 
 public static long getSizeInBytes(String path) throws Exception {
@@ -451,7 +462,7 @@ public static void showInfo(InputStream stream) throws Exception {
 }
 
 public static void showInfo(ZipInputStream stream) throws Exception {
-  new OggAudioData(stream).showInfo();
+        new OggAudioData(stream).showInfo();
 }
 
 public static void showInfo(String path) throws Exception {
