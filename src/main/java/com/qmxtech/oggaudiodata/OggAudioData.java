@@ -167,7 +167,7 @@ public class OggAudioData {
         }
 
         private OggAudioData(InputStream is) throws Exception {
-                PushbackInputStream stream = new PushbackInputStream(is, 10000000);
+                PushbackInputStream stream = new PushbackInputStream(is, 20000000);
                 long size = 0;
                 int bt = 0;
                 ArrayList<Byte> btList = new ArrayList<Byte>();
@@ -180,7 +180,7 @@ public class OggAudioData {
                         btList.add(new Byte((byte) bt));
                         size++;
                 }
-                System.out.println(btList.size());
+
                 byte[] reset = new byte[btList.size()];
                 int j=0;
                 for(Byte y: btList) {
