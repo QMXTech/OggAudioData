@@ -55,85 +55,85 @@ public class OggAudioData {
         }
 
         public static int getChannels(InputStream stream, Long len) throws Exception {
-                return (new OggAudioData(stream, len)).getChannels();
+                return (new OggAudioData(stream, len)).audio_channels;
         }
 
         public static int getChannels(InputStream stream) throws Exception {
-                return (new OggAudioData(stream)).getChannels();
+                return (new OggAudioData(stream)).audio_channels;
         }
 
         public static int getChannels(ZipInputStream stream) throws Exception {
-                return (new OggAudioData(stream)).getChannels();
+                return (new OggAudioData(stream)).audio_channels;
         }
 
         public static int getChannels(String path) throws Exception {
-                return (new OggAudioData(path)).getChannels();
+                return (new OggAudioData(path)).audio_channels;
         }
 
         public static int getChannels(File file) throws Exception {
-                return (new OggAudioData(file)).getChannels();
+                return (new OggAudioData(file)).audio_channels;
         }
 
         public static int getSampleRate(InputStream stream, Long len) throws Exception {
-                return (new OggAudioData(stream, len)).getSampleRate();
+                return (new OggAudioData(stream, len)).audio_sample_rate;
         }
 
         public static int getSampleRate(InputStream stream) throws Exception {
-                return (new OggAudioData(stream)).getSampleRate();
+                return (new OggAudioData(stream)).audio_sample_rate;
         }
 
         public static int getSampleRate(ZipInputStream stream) throws Exception {
-                return (new OggAudioData(stream)).getSampleRate();
+                return (new OggAudioData(stream)).audio_sample_rate;
         }
 
         public static int getSampleRate(String path) throws Exception {
-                return (new OggAudioData(path)).getSampleRate();
+                return (new OggAudioData(path)).audio_sample_rate;
         }
 
         public static int getSampleRate(File file) throws Exception {
-                return (new OggAudioData(file)).getSampleRate();
+                return (new OggAudioData(file)).audio_sample_rate;
         }
 
         public static int getVorbisVersion(InputStream stream, Long len) throws Exception {
-                return (new OggAudioData(stream, len)).getVorbisVersion();
+                return (new OggAudioData(stream, len)).vorbis_version;
         }
 
         public static int getVorbisVersion(InputStream stream) throws Exception {
-                return (new OggAudioData(stream)).getVorbisVersion();
+                return (new OggAudioData(stream)).vorbis_version;
         }
 
         public static int getVorbisVersion(ZipInputStream stream) throws Exception {
-                return (new OggAudioData(stream)).getVorbisVersion();
+                return (new OggAudioData(stream)).vorbis_version;
         }
 
         public static int getVorbisVersion(String path) throws Exception {
-                return (new OggAudioData(path)).getVorbisVersion();
+                return (new OggAudioData(path)).vorbis_version;
         }
 
         public static int getVorbisVersion(File file) throws Exception {
-                return (new OggAudioData(file)).getVorbisVersion();
+                return (new OggAudioData(file)).vorbis_version;
         }
 
         // Virtually useless... Size already known at time of call... Implemented anyway for API uniformity.
         public static long getSizeInBytes(InputStream stream, Long len) throws Exception {
-                return (new OggAudioData(stream, len)).getSizeInBytes();
+                return (new OggAudioData(stream, len)).dataLength;
         }
 
         public static long getSizeInBytes(InputStream stream) throws Exception {
-                return (new OggAudioData(stream)).getSizeInBytes();
+                return (new OggAudioData(stream)).dataLength;
         }
 
         public static long getSizeInBytes(ZipInputStream stream) throws Exception {
-                return (new OggAudioData(stream)).getSizeInBytes();
+                return (new OggAudioData(stream)).dataLength;
         }
 
         public static long getSizeInBytes(String path) throws Exception {
-                return (new OggAudioData(path)).getSizeInBytes();
+                return (new OggAudioData(path)).dataLength;
         }
 
         // Virtually useless... Size already known at time of call... Implemented anyway for API uniformity.
         public static long getSizeInBytes(File file) throws Exception {
-                return (new OggAudioData(file)).getSizeInBytes();
+                return (new OggAudioData(file)).dataLength;
         }
 
         public static void showInfo(InputStream stream, Long len) throws Exception {
@@ -167,23 +167,21 @@ public class OggAudioData {
         }
 
         private OggAudioData(InputStream is) throws Exception {
-                PushbackInputStream stream = new PushbackInputStream(is, 20000000);
+                PushbackInputStream stream = new PushbackInputStream(is, 10000000);
                 long size = 0;
-                int x = 0;
-                byte bt = 0;
+                int bt = 0;
                 ArrayList<Byte> btList = new ArrayList<Byte>();
 
                 while (bt != -1) {
-                        x = stream.read();
-                        bt = (byte) x;
+                        bt = stream.read();
                         if (bt == -1) {
                                 break;
                         }
+                        btList.add(new Byte((byte) bt));
                         size++;
-                        btList.add(bt);
                 }
-
-                byte[] reset = new byte[(int)size];
+                System.out.println(btList.size());
+                byte[] reset = new byte[btList.size()];
                 int j=0;
                 for(Byte y: btList) {
                         reset[j++] = y.byteValue();
@@ -277,41 +275,6 @@ public class OggAudioData {
                 }
         }
 
-        private long getSeconds() {
-                if (audio_sample_rate > 0)
-                        return sampleNum / audio_sample_rate;
-                else
-                        return 0;
-        }
-
-        private int getChannels() {
-                if (audio_sample_rate > 0)
-                        return audio_sample_rate;
-                else
-                        return 0;
-        }
-
-        private int getSampleRate() {
-                if (audio_channels > 0)
-                        return audio_channels;
-                else
-                        return 0;
-        }
-
-        private int getVorbisVersion() {
-                if (vorbis_version > 0)
-                        return vorbis_version;
-                else
-                        return 0;
-        }
-
-        private long getSizeInBytes() {
-                if (dataLength > 0)
-                        return dataLength;
-                else
-                        return 0;
-        }
-
         private int read32Bits(InputStream inStream) throws Exception {
                 int n = 0;
                 for (int i = 0; i < 4; i++) {
@@ -321,6 +284,13 @@ public class OggAudioData {
                         n |= b << (8 * i);
                 }
                 return n;
+        }
+
+        private long getSeconds() {
+                if (audio_sample_rate > 0)
+                        return sampleNum / audio_sample_rate;
+                else
+                        return 0;
         }
 
         private void showInfo() {
