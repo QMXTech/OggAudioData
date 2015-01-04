@@ -17,7 +17,7 @@ public class Test {
       System.out.println("File handle:");
       OggAudioData.showInfo(new File(TEST_PATH_RELATIVE));
       System.out.println("");
-      System.out.println("Input Stream (without size)");
+      System.out.println("Input Stream (without size):");
       OggAudioData.showInfo((InputStream) new FileInputStream(TEST_PATH_RELATIVE));
       System.out.println("");
       System.out.println("Input Stream (with size):");
