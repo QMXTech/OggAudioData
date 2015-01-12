@@ -1,4 +1,4 @@
-##OGG Audio Metadata Utility Library
+## OGG Audio Metadata Utility Library
 
 This is a universal Java library designed to add limited OGG/Vorbis file metadata retrieval methods to any Java application.
 This library is intended to be used alongside Numina's Musique proxy for Minecraft, though it may have other uses as well.
@@ -7,11 +7,11 @@ This library is licensed under the GNU GPL and is based on the OGG metadata hand
 
 >Latest Builds: (currently unavailable)
 
-####Known Issues:
+#### Known Issues:
 
 * None reported.
 
-####Recent Changes:
+#### Recent Changes:
 >2014-12-20 by Korynkai:
 
 * Some more refactoring - Reorganized, removed redundant code. Also imposed programatic access strictness.
