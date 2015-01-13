@@ -1,4 +1,5 @@
 <project>
+  <property environment="env"/>
   <target name="clean">
     <delete dir="build" />
   </target>
