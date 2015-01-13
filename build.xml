@@ -4,13 +4,13 @@
   </target>
   <target name="build">
     <mkdir dir="build/classes" />
-    <javac srcdir="src" destdir="build/classes" />
+    <javac srcdir="src" destdir="build/classes" encoding="utf-8" />
     <mkdir dir="build/libs" />
     <jar destfile="build/libs/OggAudioData-${env.BUILD_NAME}.jar" basedir="build/classes" />
   </target>
   <target name="test" depends="build">
     <mkdir dir="build/test" />
-    <javac srcdir="test" destdir="build/test">
+    <javac srcdir="test" destdir="build/test" encoding="utf-8">
       <classpath>
         <pathelement path="com.qmxtech.oggaudiodata"/>
         <pathelement location="build/libs/OggAudioData-${env.BUILD_NAME}.jar"/>
