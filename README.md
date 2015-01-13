@@ -5,7 +5,7 @@ This library is intended to be used alongside Numina's Musique proxy for Minecra
 
 This library is licensed under the GNU GPL and is based on the OGG metadata handling class for webCDcreator (available at http://haeger.name/webCDwriter)
 
->Latest Builds: (currently unavailable)
+>Latest Builds: [![Build Status](https://jenkins.qmxtech.com/job/Open-Source.OggAudioData/badge/icon)](https://jenkins.qmxtech.com/job/Open-Source.OggAudioData/)
 
 #### Known Issues:
 
