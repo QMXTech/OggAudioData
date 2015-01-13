@@ -6,14 +6,14 @@
     <mkdir dir="build/classes" />
     <javac srcdir="src" destdir="build/classes" />
     <mkdir dir="build/libs" />
-    <jar destfile="build/libs/OggAudioData.jar" basedir="build/classes" />
+    <jar destfile="build/libs/OggAudioData-${env.BUILD_NAME}.jar" basedir="build/classes" />
   </target>
   <target name="test" depends="build">
     <mkdir dir="build/test" />
     <javac srcdir="test" destdir="build/test">
       <classpath>
         <pathelement path="com.qmxtech.oggaudiodata"/>
-        <pathelement location="build/libs/OggAudioData.jar"/>
+        <pathelement location="build/libs/OggAudioData-${env.BUILD_NAME}.jar"/>
       </classpath>
     </javac>
     <copydir src="build/classes/com" dest="build/test/com" />
