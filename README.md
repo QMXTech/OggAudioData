@@ -3,7 +3,7 @@
 This is a universal Java library designed to add limited OGG/Vorbis file metadata retrieval methods to any Java application.
 This library is intended to be used alongside Numina's Musique proxy for Minecraft, though it may have other uses as well.
 
-This library is licensed under the GNU GPL and is based on the OGG metadata handling class for webCDcreator (available at http://haeger.name/webCDwriter)
+This library is licensed under the GNU GPL and is based on the OGG metadata handling class for webCDwriter (available at http://haeger.name/webCDwriter)
 
 >Latest Builds: [![Build Status](https://jenkins.qmxtech.com/job/Open-Source.OggAudioData/badge/icon)](https://jenkins.qmxtech.com/job/Open-Source.OggAudioData/)
 
